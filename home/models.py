@@ -6,7 +6,7 @@ class Home(models.Model):
     photo = models.ImageField(upload_to='photos/')
     name = models.CharField(max_length=100)
     job = models.CharField(max_length=100,default="Web Developer")
-
+    is_active = models.BooleanField(default=False)
     def __str__(self):
         return self.name
 class About(models.Model):

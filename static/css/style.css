@@ -861,3 +861,86 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
       .site-footer .social li a:hover {
         background: #b1cc9e;
         color: #ffffff; }
+/* Desktop */
+#safe-menu {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Mobile */
+@media (max-width: 991px) {
+  #safe-menu {
+    display: none;
+    flex-direction: column;
+    background: #fff;
+    padding: 20px;
+  }
+
+  #safe-menu.active {
+    display: flex;
+  }
+
+  #safe-burger {
+    cursor: pointer;
+    font-size: 26px;
+  }
+}
+/* Desktop */
+#safe-menu{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+}
+
+/* Mobile */
+@media (max-width: 991px){
+  #safe-menu{
+    display:none;
+    flex-direction:column;
+    background:#fff;
+    padding:20px;
+  }
+  #safe-menu.active{ display:flex; }
+  #safe-burger{ cursor:pointer; font-size:26px; }
+}
+@media (max-width: 991px){
+  #safe-menu{
+    display:none;
+    flex-direction:column;
+    position:absolute;
+    top:70px;            /* navbar balandligiga moslab */
+    left:0;
+    right:0;
+    width:100%;
+    padding:18px 20px;
+    background: rgba(0,0,0,.75);
+    z-index: 9999;
+    border-radius: 10px;
+  }
+  #safe-menu.active{ display:flex; }
+
+  #safe-menu a{
+    color:#fff !important;
+    padding:10px 0;
+    display:block;
+  }
+}
+.site-navigation{
+  position: relative;
+  min-height: 64px;      /* navbar balandligi, kerak bo‘lsa 56-72 oralig‘ida */
+}
+
+#safe-burger{
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10000;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(0,0,0,.25); /* xohlasangiz olib tashlang */
+  color: #fff;                 /* burger ko‘rinishi uchun */
+}
+

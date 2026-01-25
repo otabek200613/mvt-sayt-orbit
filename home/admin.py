@@ -6,7 +6,6 @@ class ContactAdmin(admin.ModelAdmin):
     list_display = ['name','update_date','read']
     list_filter = ['update_date','read']
     search_fields = ['name','email']
-admin.site.register(Home)
 admin.site.register(About)
 admin.site.register(About_skills)
 admin.site.register(Portfolio)
@@ -23,3 +22,7 @@ admin.site.register(Contact,ContactAdmin)
 class FooterAdmin(admin.ModelAdmin):
     list_display = ("id", "is_published", "about_title", "contact_title")
     list_filter = ("is_published",)
+@admin.register(Home)
+class HomeAdmin(admin.ModelAdmin):
+    list_display = ['name','job','is_active']
+    list_editable = ('is_active',)

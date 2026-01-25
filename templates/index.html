@@ -80,27 +80,37 @@
     </div>
     <div class="site-mobile-menu-body"></div>
 </div>
-<nav class="site-nav js-site-navbar mb-5 site-navbar-target">
-    <div class="container">
-        <div class="site-navigation text-center">
-            <a href="/" class="d-block text-center float-left logo">{{ home.two_letter_of_name }}</a>
-            <ul class="js-clone-nav ml-0 pl-0 d-none d-lg-inline-block site-menu mx-auto text-center">
-                <li class="active"><a href="#home-section" class="nav-link">Home</a></li>
-                <li><a href="#about-section" class="nav-link">About</a></li>
-                <li><a href="#portfolio-section" class="nav-link">Portfolio</a></li>
-                <li><a href="#services-section" class="nav-link">Services</a></li>
-                <li><a href="#resume-section" class="nav-link">Resume</a></li>
-                <li><a href="#blog-section" class="nav-link">Blog</a></li>
-                <li><a href="#contact-section" class="nav-link">Contact</a></li>
-            </ul>
-            <a href="#"
-               class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block light d-lg-none"
-               data-toggle="collapse" data-target="#main-navbar">
-                <span></span>
-            </a>
-        </div>
+<nav class="site-nav mb-5 site-navbar-target">
+  <div class="container">
+    <div class="site-navigation text-center">
+      <a href="/" class="d-block float-left logo">{{ home.two_letter_of_name }}</a>
+
+      <!-- MENU -->
+      <ul id="safe-menu" class="site-menu mx-auto text-center">
+        {% if user.is_authenticated %}
+          <li><a href="#home-section">Home</a></li>
+          <li><a href="#about-section">About</a></li>
+          <li><a href="#portfolio-section">Portfolio</a></li>
+          <li><a href="#services-section">Services</a></li>
+          <li><a href="#resume-section">Resume</a></li>
+          <li><a href="#contact-section">Contact</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+          <li><a href="{% url 'login' %}">Login</a></li>
+          <li><a href="{% url 'register' %}">Register</a></li>
+        {% endif %}
+      </ul>
+
+      <div id="safe-burger" class="burger d-lg-none">
+        ☰
+      </div>
     </div>
+  </div>
 </nav>
+
+
+
+
 <div class="site-blocks-cover overlay" style="background-image: url({{ home.photo.url }});"
      data-aos="fade"
      data-stellar-background-ratio="0.5" id="home-section">
@@ -114,125 +124,126 @@
         </div>
     </div>
 </div>
-{% for about in abouts %}
-    <section class="site-section" id="about-section">
-        <div class="container">
-            <div class="row mb-5 align-items-center">
-                <div class="col-lg-7 pr-lg-5 mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="0">
-                    <div class="img-wrap">
-                        <img src="{{ about.photo.url }}" alt="Image placeholder" class="img-fluid">
+{% if user.is_authenticated %}
+    {% for about in abouts %}
+        <section class="site-section" id="about-section">
+            <div class="container">
+                <div class="row mb-5 align-items-center">
+                    <div class="col-lg-7 pr-lg-5 mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="0">
+                        <div class="img-wrap">
+                            <img src="{{ about.photo.url }}" alt="Image placeholder" class="img-fluid">
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-5 pl-lg-5" data-aos="fade-up" data-aos-delay="100">
-                    <div class="section-heading">
-                        <h2>{{ about.title }}</h2>
-                    </div>
-                    <p>
-                        {{ about.content }}
-                    </p>
-                    <div class="my-5">
-                        {% for skill in about.skills.all %}
-                            <div class="skill">
-                                <h3>{{ skill.name }}</h3>
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: {{ skill.percent }}%"
-                                         aria-valuenow="{{ skill.percent }}"
-                                         aria-valuemin="0" aria-valuemax="100">
-                                        <span>{{ skill.percent }}%</span>
+                    <div class="col-lg-5 pl-lg-5" data-aos="fade-up" data-aos-delay="100">
+                        <div class="section-heading">
+                            <h2>{{ about.title }}</h2>
+                        </div>
+                        <p>
+                            {{ about.content }}
+                        </p>
+                        <div class="my-5">
+                            {% for skill in about.skills.all %}
+                                <div class="skill">
+                                    <h3>{{ skill.name }}</h3>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: {{ skill.percent }}%"
+                                             aria-valuenow="{{ skill.percent }}"
+                                             aria-valuemin="0" aria-valuemax="100">
+                                            <span>{{ skill.percent }}%</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
+                        <p>
+                            <a href="#contact-section" class="btn btn-primary smoothscroll">Hire Me</a>
+                            <a href="#" class="btn btn-secondary">Download CV</a>
+                        </p>
                     </div>
-                    <p>
-                        <a href="#contact-section" class="btn btn-primary smoothscroll">Hire Me</a>
-                        <a href="#" class="btn btn-secondary">Download CV</a>
-                    </p>
                 </div>
             </div>
+        </section>
+    {% endfor %}
+    <section class="untree_co-section" id="portfolio-section">
+        <div class="container">
+            <div class="row">
+                <div class="section-heading text-center col-md-12" data-aos="fade-up" data-aos-delay="0">
+                    <h2>My Portfolio</h2>
+                </div>
+            </div>
+            <div class="filters" data-aos="fade-up" data-aos-delay="100">
+                <ul>
+                    <li><a href="/#portfolio-section">All</a></li>
+                    {% for category in categories %}
+                        <li><a href="?cat={{ category.title }}#portfolio-section">{{ category.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="row grid">
+                {% for portfolio in portfolio %}
+                    <div class="single-portfolio col-sm-4 all" data-aos="fade-up">
+                        <a href="{{ portfolio.photo.url }}" data-fancybox="gal">
+                            <img src="{{ portfolio.photo.url }}" alt="Image" class="img-fluid">
+                            <div class="contents">
+                                <h3>{{ portfolio.name }}</h3>
+                                <div class="cat">{{ portfolio.category }}</div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
         </div>
     </section>
-{% endfor %}
-<section class="untree_co-section" id="portfolio-section">
-    <div class="container">
-        <div class="row">
-            <div class="section-heading text-center col-md-12" data-aos="fade-up" data-aos-delay="0">
-                <h2>My Portfolio</h2>
-            </div>
-        </div>
-        <div class="filters" data-aos="fade-up" data-aos-delay="100">
-            <ul>
-                <li><a href="/#portfolio-section">All</a></li>
-                {% for category in categories %}
-                    <li><a href="?cat={{ category.title }}#portfolio-section">{{ category.title }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="row grid">
-            {% for portfolio in portfolio %}
-                <div class="single-portfolio col-sm-4 all" data-aos="fade-up">
-                    <a href="{{ portfolio.photo.url }}" data-fancybox="gal">
-                        <img src="{{ portfolio.photo.url }}" alt="Image" class="img-fluid">
-                        <div class="contents">
-                            <h3>{{ portfolio.name }}</h3>
-                            <div class="cat">{{ portfolio.category }}</div>
-                        </div>
-                    </a>
+
+
+    <div class="untree_co-section" id="services-section">
+        <div class="container">
+            <div class="row">
+
+                <div class="section-heading text-center col-md-12 mb-5" data-aos="fade-up" data-aos-delay="0">
+                    <h2>Services</h2>
                 </div>
-            {% endfor %}
-        </div>
-    </div>
-    </div>
-</section>
-
-
-<div class="untree_co-section" id="services-section">
-    <div class="container">
-        <div class="row">
-
-            <div class="section-heading text-center col-md-12 mb-5" data-aos="fade-up" data-aos-delay="0">
-                <h2>Services</h2>
             </div>
-        </div>
-        <div class="row">
-            {% for s in services %}
-                <div class="col-md-6 col-lg-4 text-center mb-5" data-aos="fade-up" data-aos-delay="100">
-                    <div class="site-service-item" data-animate-effect="fadeIn">
-                        <div class="icon mb-3">
-                            <img src="{{ s.image.url }}" alt="{{ s.name }}" width="150">
+            <div class="row">
+                {% for s in services %}
+                    <div class="col-md-6 col-lg-4 text-center mb-5" data-aos="fade-up" data-aos-delay="100">
+                        <div class="site-service-item" data-animate-effect="fadeIn">
+                            <div class="icon mb-3">
+                                <img src="{{ s.image.url }}" alt="{{ s.name }}" width="150">
+                            </div>
+                            <h3 class="mb-4">{{ s.name }}</h3>
+                            <p>{{ s.body }}</p>
                         </div>
-                        <h3 class="mb-4">{{ s.name }}</h3>
-                        <p>{{ s.body }}</p>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-
-    </div>
-</div>
-
-
-<div class="untree_co-section" id="resume-section">
-    <div class="container">
-        <div class="row">
-            <div class="section-heading text-center col-md-12 mb-5" data-aos="fade-up" data-aos-delay="0">
-                <h2>Resume</h2>
+                {% endfor %}
             </div>
+
         </div>
-        <div class="row">
-            {% for photo in resume_photo %}
-                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-                    <img src="{{ photo.photo.url }}" alt="Image" class="img-fluid">
+    </div>
+
+
+    <div class="untree_co-section" id="resume-section">
+        <div class="container">
+            <div class="row">
+                <div class="section-heading text-center col-md-12 mb-5" data-aos="fade-up" data-aos-delay="0">
+                    <h2>Resume</h2>
                 </div>
-            {% endfor %}
-            <div class="col-lg-7 ml-auto" data-aos="fade-up" data-aos-delay="200">
-                <h3 class="mb-5">Work Experience</h3>
-                {% for e in experience %}
-                    <div class="resume-item d-flex work">
-                        <div>
-                            <h4>{{ e.job }}</h4>
-                            <div class="d-flex">
-                                <div class="d-flex resume-meta">
+            </div>
+            <div class="row">
+                {% for photo in resume_photo %}
+                    <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                        <img src="{{ photo.photo.url }}" alt="Image" class="img-fluid">
+                    </div>
+                {% endfor %}
+                <div class="col-lg-7 ml-auto" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="mb-5">Work Experience</h3>
+                    {% for e in experience %}
+                        <div class="resume-item d-flex work">
+                            <div>
+                                <h4>{{ e.job }}</h4>
+                                <div class="d-flex">
+                                    <div class="d-flex resume-meta">
 <span class="mr-3">
 <span class="icon">
 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-building" fill="currentColor"
@@ -244,22 +255,22 @@
 </span>
 <span>{{ e.company }}</span>
 </span>
-                                    <span class="icon">
+                                        <span class="icon">
 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-geo-alt" fill="currentColor"
      xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
 </svg>
 </span>
-                                    <span>{{ e.location }}</span>
+                                        <span>{{ e.location }}</span>
+                                    </div>
+                                    <div></div>
                                 </div>
-                                <div></div>
                             </div>
-                        </div>
-                        <div class="ml-auto resume-meta">
-                            <div class="clearfix">
-                                <span class="period d-block float-right"><span>{{ e.job_type }}</span></span>
-                            </div>
-                            <span class="icon">
+                            <div class="ml-auto resume-meta">
+                                <div class="clearfix">
+                                    <span class="period d-block float-right"><span>{{ e.job_type }}</span></span>
+                                </div>
+                                <span class="icon">
 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-event" fill="currentColor"
      xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd"
@@ -269,17 +280,16 @@
 <rect width="2" height="2" x="11" y="6" rx=".5"/>
 </svg>
 </span>
-                            <span>{{ e.start_date }} -
-                                {% if e.end_date %}
-                                    {{ e.end_date }}
-                                {% else %}
-                                    Hozirgacha
-                                {% endif %}</span>
+                                <span>{{ e.start_date }} -
+                                    {% if e.end_date %}
+                                        {{ e.end_date }}
+                                    {% else %}
+                                        Hozirgacha
+                                    {% endif %}</span>
+                            </div>
                         </div>
-                    </div>
 
-                {% endfor %}
-
+                    {% endfor %}
 
 
 
@@ -288,14 +298,15 @@
 
 
 
-                <h3 class="mt-5 mb-3">Education</h3>
 
-                {% for edu in education %}
-                    <div class="resume-item d-flex work">
-                        <div>
-                            <h4>{{ edu.degree }}</h4>
-                            <div class="d-flex">
-                                <div class="d-flex resume-meta">
+                    <h3 class="mt-5 mb-3">Education</h3>
+
+                    {% for edu in education %}
+                        <div class="resume-item d-flex work">
+                            <div>
+                                <h4>{{ edu.degree }}</h4>
+                                <div class="d-flex">
+                                    <div class="d-flex resume-meta">
                 <span class="mr-3">
                     <span class="icon">
                         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-building" fill="currentColor"
@@ -306,11 +317,11 @@
                     </span>
                     <span>{{ edu.university }}</span>
                 </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="ml-auto resume-meta">
+                            <div class="ml-auto resume-meta">
         <span class="icon">
             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-event" fill="currentColor"
                  xmlns="http://www.w3.org/2000/svg">
@@ -320,154 +331,154 @@
                       d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
             </svg>
         </span>
-                            <span>
+                                <span>
             {{ edu.start_date|date:"Y" }} -
-                                {% if edu.end_date %}
-                                    {{ edu.end_date|date:"Y" }}
-                                {% else %}
-                                    Hozirgacha
-                                {% endif %}
+                                    {% if edu.end_date %}
+                                        {{ edu.end_date|date:"Y" }}
+                                    {% else %}
+                                        Hozirgacha
+                                    {% endif %}
         </span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="site-section bg-light" id="testimonials-section">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md-12" data-aos="fade-up" data-aos-delay="0">
+                    <div class="section-heading text-center">
+                        <h2>Happy Clients</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for c in clients %}
+                    <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                        <div class="block-47 d-flex mb-5">
+                            <div class="block-47-image">
+                                <img src="{{ c.image.url }}" alt="Image placeholder" class="img-fluid">
+                            </div>
+                            <blockquote class="block-47-quote">
+                                <p>&ldquo;{{ c.body }}&rdquo;</p>
+                                <cite class="block-47-quote-author">
+                                    &mdash; {{ c.name }}
+
+                                    {% if c.company_url %}
+                                        <a href="{{ c.company_url }}" target="_blank">{{ c.company }}</a>
+                                    {% else %}
+                                        {{ c.company }}
+                                    {% endif %}
+                                </cite>
+                            </blockquote>
                         </div>
                     </div>
                 {% endfor %}
             </div>
         </div>
     </div>
-</div>
 
 
-<div class="site-section bg-light" id="testimonials-section">
-    <div class="container">
-        <div class="row mb-5">
-            <div class="col-md-12" data-aos="fade-up" data-aos-delay="0">
-                <div class="section-heading text-center">
-                    <h2>Happy Clients</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            {% for c in clients %}
-                <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="block-47 d-flex mb-5">
-                        <div class="block-47-image">
-                            <img src="{{ c.image.url }}" alt="Image placeholder" class="img-fluid">
-                        </div>
-                        <blockquote class="block-47-quote">
-                            <p>&ldquo;{{ c.body }}&rdquo;</p>
-                            <cite class="block-47-quote-author">
-                                &mdash; {{ c.name }}
-
-                                {% if c.company_url %}
-                                    <a href="{{ c.company_url }}" target="_blank">{{ c.company }}</a>
-                                {% else %}
-                                    {{ c.company }}
-                                {% endif %}
-                            </cite>
-                        </blockquote>
+    <div class="site-section" id="blog-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 mb-5" data-aos="fade-up" data-aos-delay="0">
+                    <div class="section-heading text-center">
+                        <h2>Read on Medium</h2>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
-    </div>
-</div>
-
-
-<div class="site-section" id="blog-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 mb-5" data-aos="fade-up" data-aos-delay="0">
-                <div class="section-heading text-center">
-                    <h2>Read on Medium</h2>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-9">
+                    <ul class="list-unstyled blog-entries">
+                        {% for i in blog %}
+                            <li data-aos="fade-up" data-aos-delay="100">
+                                <a href="{{ i.url }}"
+                                   class="d-block d-md-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="d-block date">{{ i.date }}</span>
+                                        <h1>{{ i.title }}</h1>
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-md-9">
-                <ul class="list-unstyled blog-entries">
-                    {% for i in blog %}
-                        <li data-aos="fade-up" data-aos-delay="100">
-                            <a href="{{ i.url }}" class="d-block d-md-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="d-block date">{{ i.date }}</span>
-                                    <h1>{{ i.title }}</h1>
+    </div>
+
+
+    <div class="untree_co-section" id="contact-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 mb-5" data-aos="fade-up" data-aos-delay="0">
+                    <div class="section-heading text-center">
+                        <h2>Contact Me</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-7">
+                    <form method="post" class="contact-form" data-aos="fade-up" data-aos-delay="100">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class for="name">First name</label>
+                                    {#                                <input type="text" class="form-control" id="fname">#}
+                                    {{ form.name }}
                                 </div>
-                            </a>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label class for="surname">Last name</label>
+                                    {#                                <input type="text" class="form-control" id="lname">#}
+                                    {{ form.surname }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class for="email">Email address</label>
+                            {#                        <input type="email" class="form-control" id="email">#}
+                            {{ form.email }}
+                        </div>
+                        <div class="form-group">
+                            <label class for="message">Message</label>
+                            {#                        <textarea name class="form-control" id="message" cols="30" rows="5"></textarea>#}
+                            {{ form.message }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+                <div class="col-lg-4 ml-auto" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="h5 mb-4">Contact Info</h3>
+                    <address class="text-black d-flex"><span class="mt-1 icon-room mr-2"></span><span>43 Raymouth Rd. Baltemoer, London 3910</span>
+                    </address>
+                    <ul class="list-unstyled ul-links mb-4">
+                        <li class="mb-3"><a href="tel://11234567890" class="d-flex"><span
+                                class="mt-1 icon-phone mr-2"></span><span>+1(123)-456-7890</span></a></li>
+                        <li class="mb-3"><a href="tel://11234567890" class="d-flex"><span
+                                class="mt-1 icon-phone mr-2"></span><span>+1(123)-456-7890</span></a></li>
+                        <li class="mb-3"><a
+                                href="https://preview.colorlib.com/cdn-cgi/l/email-protection#dcb5b2bab39cb1a5b8b3b1bdb5b2f2bfb3b1"
+                                class="d-flex"><span class="mt-1 icon-envelope mr-2"></span><span><span
+                                class="__cf_email__"
+                                data-cfemail="5c35323a331c31253833313d3532723f3331">[email&#160;protected]</span></span></a>
                         </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="untree_co-section" id="contact-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 mb-5" data-aos="fade-up" data-aos-delay="0">
-                <div class="section-heading text-center">
-                    <h2>Contact Me</h2>
+                        <li class="mb-3"><a href="https://colorlib/" target="_blank" class="d-flex"><span
+                                class="mt-1 icon-globe mr-2"></span><span>https://Colorlib/</span></a></li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-7">
-                <form method="post" class="contact-form" data-aos="fade-up" data-aos-delay="100">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label class for="name">First name</label>
-                                {#                                <input type="text" class="form-control" id="fname">#}
-                                {{ form.name }}
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label class for="surname">Last name</label>
-                                {#                                <input type="text" class="form-control" id="lname">#}
-                                {{ form.surname }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class for="email">Email address</label>
-                        {#                        <input type="email" class="form-control" id="email">#}
-                        {{ form.email }}
-                    </div>
-                    <div class="form-group">
-                        <label class for="message">Message</label>
-                        {#                        <textarea name class="form-control" id="message" cols="30" rows="5"></textarea>#}
-                        {{ form.message }}
-                    </div>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </form>
-            </div>
-            <div class="col-lg-4 ml-auto" data-aos="fade-up" data-aos-delay="200">
-                <h3 class="h5 mb-4">Contact Info</h3>
-                <address class="text-black d-flex"><span class="mt-1 icon-room mr-2"></span><span>43 Raymouth Rd. Baltemoer, London 3910</span>
-                </address>
-                <ul class="list-unstyled ul-links mb-4">
-                    <li class="mb-3"><a href="tel://11234567890" class="d-flex"><span
-                            class="mt-1 icon-phone mr-2"></span><span>+1(123)-456-7890</span></a></li>
-                    <li class="mb-3"><a href="tel://11234567890" class="d-flex"><span
-                            class="mt-1 icon-phone mr-2"></span><span>+1(123)-456-7890</span></a></li>
-                    <li class="mb-3"><a
-                            href="https://preview.colorlib.com/cdn-cgi/l/email-protection#dcb5b2bab39cb1a5b8b3b1bdb5b2f2bfb3b1"
-                            class="d-flex"><span class="mt-1 icon-envelope mr-2"></span><span><span class="__cf_email__"
-                                                                                                    data-cfemail="5c35323a331c31253833313d3532723f3331">[email&#160;protected]</span></span></a>
-                    </li>
-                    <li class="mb-3"><a href="https://colorlib/" target="_blank" class="d-flex"><span
-                            class="mt-1 icon-globe mr-2"></span><span>https://Colorlib/</span></a></li>
-                </ul>
-            </div>
-        </div>
     </div>
-</div>
-
-
-
+{% endif %}
 
 <div class="site-footer">
     <div class="footer-dots"></div>
@@ -487,12 +498,24 @@
                 <div class="widget">
                     <h3>Connect</h3>
                     <ul class="list-unstyled social">
-                        {% if footer.instagram %}<li><a href="{{ footer.instagram }}" target="_blank"><span class="icon-instagram"></span></a></li>{% endif %}
-                        {% if footer.twitter %}<li><a href="{{ footer.twitter }}" target="_blank"><span class="icon-twitter"></span></a></li>{% endif %}
-                        {% if footer.facebook %}<li><a href="{{ footer.facebook }}" target="_blank"><span class="icon-facebook"></span></a></li>{% endif %}
-                        {% if footer.linkedin %}<li><a href="{{ footer.linkedin }}" target="_blank"><span class="icon-linkedin"></span></a></li>{% endif %}
-                        {% if footer.pinterest %}<li><a href="{{ footer.pinterest }}" target="_blank"><span class="icon-pinterest"></span></a></li>{% endif %}
-                        {% if footer.dribbble %}<li><a href="{{ footer.dribbble }}" target="_blank"><span class="icon-dribbble"></span></a></li>{% endif %}
+                        {% if footer.instagram %}
+                            <li><a href="{{ footer.instagram }}" target="_blank"><span
+                                    class="icon-instagram"></span></a></li>{% endif %}
+                        {% if footer.twitter %}
+                            <li><a href="{{ footer.twitter }}" target="_blank"><span class="icon-twitter"></span></a>
+                            </li>{% endif %}
+                        {% if footer.facebook %}
+                            <li><a href="{{ footer.facebook }}" target="_blank"><span class="icon-facebook"></span></a>
+                            </li>{% endif %}
+                        {% if footer.linkedin %}
+                            <li><a href="{{ footer.linkedin }}" target="_blank"><span class="icon-linkedin"></span></a>
+                            </li>{% endif %}
+                        {% if footer.pinterest %}
+                            <li><a href="{{ footer.pinterest }}" target="_blank"><span
+                                    class="icon-pinterest"></span></a></li>{% endif %}
+                        {% if footer.dribbble %}
+                            <li><a href="{{ footer.dribbble }}" target="_blank"><span class="icon-dribbble"></span></a>
+                            </li>{% endif %}
                     </ul>
                 </div>
             </div>
@@ -507,9 +530,12 @@
                     {% endif %}
 
                     <ul class="list-unstyled links mb-4">
-                        {% if footer.phone1 %}<li><a href="tel:{{ footer.phone1 }}">{{ footer.phone1 }}</a></li>{% endif %}
-                        {% if footer.phone2 %}<li><a href="tel:{{ footer.phone2 }}">{{ footer.phone2 }}</a></li>{% endif %}
-                        {% if footer.email %}<li><a href="mailto:{{ footer.email }}">{{ footer.email }}</a></li>{% endif %}
+                        {% if footer.phone1 %}
+                            <li><a href="tel:{{ footer.phone1 }}">{{ footer.phone1 }}</a></li>{% endif %}
+                        {% if footer.phone2 %}
+                            <li><a href="tel:{{ footer.phone2 }}">{{ footer.phone2 }}</a></li>{% endif %}
+                        {% if footer.email %}
+                            <li><a href="mailto:{{ footer.email }}">{{ footer.email }}</a></li>{% endif %}
                     </ul>
                 </div>
             </div>
@@ -517,9 +543,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 
 <div id="overlayer"></div>
@@ -561,6 +584,22 @@
         integrity="sha512-FIKRFRxgD20moAo96hkZQy/5QojZDAbyx0mQ17jEGHCJc/vi0G2HXLtofwD7Q3NmivvP9at5EVgbRqOaOQb+Rg=="
         data-cf-beacon='{"rayId":"878fa5d6bada95fd","b":1,"version":"2024.3.0","token":"cd0b4b3a733644fc843ef0b185f98241"}'
         crossorigin="anonymous"></script>
+<script>
+  const b = document.getElementById('safe-burger');
+  const m = document.getElementById('safe-menu');
+  if (b && m) {
+    b.addEventListener('click', () => m.classList.toggle('active'));
+  }
+</script>
+<script>
+  const b = document.getElementById('safe-burger');
+  const m = document.getElementById('safe-menu');
+  if (b && m) {
+    b.addEventListener('click', () => m.classList.toggle('active'));
+  }
+</script>
+
+
 </body>
 
 </html>
