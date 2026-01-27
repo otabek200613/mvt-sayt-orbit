@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{% static 'css/aos.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    <title>Logout</title>
+    <title>{{ home.page_title }}</title>
 </head>
 
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="100">
@@ -30,20 +30,19 @@
             <p class="lead mb-4">Xizmatimizdan foydalanganingiz uchun rahmat!</p>
             <h2 class="text-black mb-5">Tizimdan chiqishni xohlaysizmi?</h2>
 
-            <div class="logout-actions">
+            <!-- ✅ BUTTONLAR: ikkalasi ham bir xil dizayn + orasida masofa -->
+            <div class="d-flex justify-content-center flex-wrap" style="gap: 12px;">
                 <form method="post" action="{% url 'logout' %}" class="m-0">
                     {% csrf_token %}
-                    <button type="submit" class="logout-btn logout-btn-primary">
+                    <button type="submit" class="btn btn-primary text-white px-4">
                         Chiqish
                     </button>
                 </form>
 
-                <a href="{% url 'home' %}" class="logout-btn logout-btn-outline">
+                <a href="{% url 'home' %}" class="btn btn-primary text-white px-4">
                     Bosh sahifaga qaytish
                 </a>
             </div>
-
-
             <!-- /BUTTONLAR -->
 
         </div>
