@@ -466,21 +466,17 @@
                 </div>
                 <div class="col-lg-4 ml-auto" data-aos="fade-up" data-aos-delay="200">
                     <h3 class="h5 mb-4">Contact Info</h3>
-                    <address class="text-black d-flex"><span class="mt-1 icon-room mr-2"></span><span>43 Raymouth Rd. Baltemoer, London 3910</span>
+                    <address class="text-black d-flex"><span class="mt-1 icon-room mr-2"></span><span>{% if footer.address %}
+                        <address>{{ footer.address }}</address>
+                    {% endif %}</span>
                     </address>
-                    <ul class="list-unstyled ul-links mb-4">
-                        <li class="mb-3"><a href="tel://11234567890" class="d-flex"><span
-                                class="mt-1 icon-phone mr-2"></span><span>+1(123)-456-7890</span></a></li>
-                        <li class="mb-3"><a href="tel://11234567890" class="d-flex"><span
-                                class="mt-1 icon-phone mr-2"></span><span>+1(123)-456-7890</span></a></li>
-                        <li class="mb-3"><a
-                                href="https://preview.colorlib.com/cdn-cgi/l/email-protection#dcb5b2bab39cb1a5b8b3b1bdb5b2f2bfb3b1"
-                                class="d-flex"><span class="mt-1 icon-envelope mr-2"></span><span><span
-                                class="__cf_email__"
-                                data-cfemail="5c35323a331c31253833313d3532723f3331">[email&#160;protected]</span></span></a>
-                        </li>
-                        <li class="mb-3"><a href="https://colorlib/" target="_blank" class="d-flex"><span
-                                class="mt-1 icon-globe mr-2"></span><span>https://Colorlib/</span></a></li>
+                    <ul class="list-unstyled links mb-4">
+                        {% if footer.phone1 %}
+                            <li><a href="tel:{{ footer.phone1 }}">{{ footer.phone1 }}</a></li>{% endif %}
+                        {% if footer.phone2 %}
+                            <li><a href="tel:{{ footer.phone2 }}">{{ footer.phone2 }}</a></li>{% endif %}
+                        {% if footer.email %}
+                            <li><a href="mailto:{{ footer.email }}">{{ footer.email }}</a></li>{% endif %}
                     </ul>
                 </div>
             </div>
